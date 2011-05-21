@@ -14,6 +14,7 @@ using namespace cv;
 #define DETECT_FAST 0
 #define DETECT_STAR 1
 #define DETECT_SURF 2
+#define DETECT_GFTT 3
 
 //import the android-cv.i file so that swig is aware of all that has been previous defined
 //notice that it is not an include....

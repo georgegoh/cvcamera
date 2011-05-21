@@ -47,7 +47,8 @@ public class CVCamera extends Activity {
 	private static final int DIALOG_TUTORIAL_FAST = 3;
 	private static final int DIALOG_TUTORIAL_SURF = 4;
 	private static final int DIALOG_TUTORIAL_STAR = 5;
-	private static final int DIALOG_TUTORIAL_CHESS = 6;
+	private static final int DIALOG_TUTORIAL_GFTT = 6;
+	private static final int DIALOG_TUTORIAL_CHESS = 7;
 	private boolean captureChess;
 
 	ProgressDialog makeCalibDialog() {
@@ -75,6 +76,10 @@ public class CVCamera extends Activity {
 			break;
 		case DIALOG_TUTORIAL_STAR:
 			Toast.makeText(this, "Detecting and Displaying STAR features",
+					Toast.LENGTH_LONG).show();
+			break;
+		case DIALOG_TUTORIAL_GFTT:
+			Toast.makeText(this, "Detecting and Displaying GFTT features",
 					Toast.LENGTH_LONG).show();
 			break;
 		case DIALOG_TUTORIAL_CHESS:
@@ -187,6 +192,7 @@ public class CVCamera extends Activity {
 		menu.add("FAST");
 		menu.add("STAR");
 		menu.add("SURF");
+		menu.add("GFTT");
 		menu.add("Chess");
 		menu.add("Settings");
 		return true;
@@ -223,6 +229,13 @@ public class CVCamera extends Activity {
 
 			defaultcallbackstack.addFirst(new SURFProcessor());
 			toasts(DIALOG_TUTORIAL_SURF);
+
+		}
+
+		else if (item.getTitle().equals("GFTT")) {
+
+			defaultcallbackstack.addFirst(new GFTTProcessor());
+			toasts(DIALOG_TUTORIAL_GFTT);
 
 		}
 
@@ -381,6 +394,17 @@ public class CVCamera extends Activity {
 		public void process(int idx, image_pool pool, long timestamp,
 				NativeProcessor nativeProcessor) {
 			processor.detectAndDrawFeatures(idx, pool, cvcamera.DETECT_SURF);
+
+		}
+
+	}
+
+	class GFTTProcessor implements NativeProcessor.PoolCallback {
+
+		@Override
+		public void process(int idx, image_pool pool, long timestamp,
+				NativeProcessor nativeProcessor) {
+			processor.detectAndDrawFeatures(idx, pool, cvcamera.DETECT_GFTT);
 
 		}
 

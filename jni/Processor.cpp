@@ -14,8 +14,8 @@ using namespace cv;
 Processor::Processor() :
       stard(20/*max_size*/, 8/*response_threshold*/, 15/*line_threshold_projected*/, 8/*line_threshold_binarized*/, 5/*suppress_nonmax_size*/),
       fastd(20/*threshold*/, true/*nonmax_suppression*/),
-      surfd(100./*hessian_threshold*/, 1/*octaves*/, 2/*octave_layers*/)
-
+      surfd(100./*hessian_threshold*/, 1/*octaves*/, 2/*octave_layers*/),
+      gfttd(6/*max_corners*/, 0.20/*quality_level*/, 5/*min_distance*/, 5/*block_size*/, false/*use_harris_detector*/, 0.2/*k*/)
 {
 
 }
@@ -39,6 +39,9 @@ void Processor::detectAndDrawFeatures(int input_idx, image_pool* pool, int featu
       break;
     case DETECT_STAR:
       fd = &stard;
+      break;
+    case DETECT_GFTT:
+      fd = &gfttd;
       break;
   }
 
