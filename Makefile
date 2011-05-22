@@ -71,8 +71,12 @@ $(SWIG_C_OUT): $(SWIG_IS)
 	swig -java -c++ -I$(OPENCV_SRC)/android/android-jni/jni -package  "com.theveganrobot.cvcamera.jni" \
 	-outdir $(SWIG_JAVA_DIR) \
 	-o $(SWIG_C_OUT) $(SWIG_MAIN)
-	
-	
+	android update project --name CVCamera --path $(PROJECT_PATH) --target android-7
+# I need to run this command a second time with the --library switch.
+# android update project crashes when I try to use the --library switch during the first run.
+	android update project --name CVCamera --path $(PROJECT_PATH) --target android-7 --library $(OPENCV_SRC)/android/android-jni
+	ant debug
+
 #clean targets
 .PHONY: clean  clean-swig cleanall
 
@@ -83,4 +87,5 @@ clean-swig:
 #does clean-swig and then uses the ndk-build clean
 clean: clean-swig
 	$(ANDROID_NDK_BASE)/ndk-build clean $(BUILD_DEFS)
+	ant clean
 

@@ -12,9 +12,10 @@
 #
 
 #location of opencv source from step 1 above.
-OPENCV_SRC=~/opencv
+# MUST BE ABSOLUTE PATH!!!
+OPENCV_SRC=../opencv
 #location of android-opencv cmake config.
-OPENCV_CONFIG=../../build/android-opencv.mk
+OPENCV_CONFIG=$(OPENCV_SRC)/android/build/android-opencv.mk
 #location of the Crystax Android NDK.
 ANDROID_NDK_ROOT=$(HOME)/android-ndk-r4-crystax
 ARM_TARGETS="armeabi armeabi-v7a"
