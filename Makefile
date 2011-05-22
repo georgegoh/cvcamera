@@ -68,7 +68,7 @@ $(SWIG_C_OUT): $(SWIG_IS)
 	make clean-swig &&\
 	mkdir -p $(SWIG_C_DIR) &&\
 	mkdir -p $(SWIG_JAVA_DIR) &&\
-	swig -java -c++ -I../../android-jni/jni -package  "com.theveganrobot.cvcamera.jni" \
+	swig -java -c++ -I$(OPENCV_SRC)/android/android-jni/jni -package  "com.theveganrobot.cvcamera.jni" \
 	-outdir $(SWIG_JAVA_DIR) \
 	-o $(SWIG_C_OUT) $(SWIG_MAIN)
 	
