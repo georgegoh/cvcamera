@@ -30,6 +30,9 @@ import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.Toast;
 
+import android.content.SharedPreferences;
+import android.content.SharedPreferences.Editor;
+
 import com.opencv.camera.CameraConfig;
 import com.opencv.camera.NativePreviewer;
 import com.opencv.camera.NativeProcessor;
@@ -242,7 +245,7 @@ public class CVCamera extends Activity {
 		FrameLayout frame = new FrameLayout(this);
 
 		// Create our Preview view and set it as the content of our activity.
-		mPreview = new NativePreviewer(getApplication(), 640, 480);
+		mPreview = new NativePreviewer(getApplication(), 320, 240);
 
 		LayoutParams params = new LayoutParams(LayoutParams.WRAP_CONTENT,
 				LayoutParams.WRAP_CONTENT);
@@ -303,6 +306,14 @@ public class CVCamera extends Activity {
 		frame.addView(buttons);
 		setContentView(frame);
 		toasts(DIALOG_OPENING_TUTORIAL);
+
+		SharedPreferences settings = getSharedPreferences("CAMERA_SETTINGS", 0);
+		Editor editor = settings.edit();
+		editor.putInt("IMAGE_WIDTH", 320);
+		editor.putInt("IMAGE_HEIGHT", 240);
+		editor.putInt("camera_mode", 1); // color
+		editor.commit();
+
 	}
 
 	@Override
