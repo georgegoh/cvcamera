@@ -57,6 +57,13 @@ LIB		= libs/armeabi-v7a/$(LIBNAME) libs/armeabi/$(LIBNAME)
 
 all:	$(LIB)
 
+apk: $(LIB)
+	android update project --name CVCamera --path $(PROJECT_PATH) --target android-7 --library $(OPENCV_SRC)/android/android-jni &&\
+    ant debug
+
+install: apk
+	ant install
+
 
 #calls the ndk-build script, passing it OPENCV_ROOT and OPENCV_LIBS_DIR
 $(LIB): $(SWIG_C_OUT) $(SOURCES) $(HEADERS) $(ANDROID_MKS)
@@ -66,16 +73,14 @@ $(LIB): $(SWIG_C_OUT) $(SOURCES) $(HEADERS) $(ANDROID_MKS)
 #this creates the swig wrappers
 $(SWIG_C_OUT): $(SWIG_IS)
 	make clean-swig &&\
+	make clean-apk &&\
+	android update project --name CVCamera --path $(PROJECT_PATH) --target android-7 &&\
 	mkdir -p $(SWIG_C_DIR) &&\
 	mkdir -p $(SWIG_JAVA_DIR) &&\
 	swig -java -c++ -I$(OPENCV_SRC)/android/android-jni/jni -package  "com.theveganrobot.cvcamera.jni" \
 	-outdir $(SWIG_JAVA_DIR) \
 	-o $(SWIG_C_OUT) $(SWIG_MAIN)
-	android update project --name CVCamera --path $(PROJECT_PATH) --target android-7
-# I need to run this command a second time with the --library switch.
-# android update project crashes when I try to use the --library switch during the first run.
-	android update project --name CVCamera --path $(PROJECT_PATH) --target android-7 --library $(OPENCV_SRC)/android/android-jni
-	ant debug
+
 
 #clean targets
 .PHONY: clean  clean-swig cleanall
@@ -83,9 +88,14 @@ $(SWIG_C_OUT): $(SWIG_IS)
 #this deletes the generated swig java and the generated c wrapper
 clean-swig:
 	rm -f $(SWIG_JAVA_OUT) $(SWIG_C_OUT)
-	
+
+clean-apk:
+	rm -f default.properties
+	rm -f local.properties
+	rm -f build.xml
+	rm -f proguard.cfg
+
 #does clean-swig and then uses the ndk-build clean
-clean: clean-swig
+clean: clean-swig clean-apk
 	$(ANDROID_NDK_BASE)/ndk-build clean $(BUILD_DEFS)
-	ant clean
 
