@@ -44,11 +44,9 @@ public class CVCamera extends Activity {
 	static final int DIALOG_CALIBRATING = 0;
 	static final int DIALOG_CALIBRATION_FILE = 1;
 	private static final int DIALOG_OPENING_TUTORIAL = 2;
-	private static final int DIALOG_TUTORIAL_FAST = 3;
-	private static final int DIALOG_TUTORIAL_SURF = 4;
-	private static final int DIALOG_TUTORIAL_STAR = 5;
-	private static final int DIALOG_TUTORIAL_GFTT = 6;
-	private static final int DIALOG_TUTORIAL_CHESS = 7;
+	private static final int DIALOG_TUTORIAL_STAR = 3;
+	private static final int DIALOG_TUTORIAL_GFTT = 4;
+	private static final int DIALOG_TUTORIAL_CHESS = 5;
 	private boolean captureChess;
 
 	ProgressDialog makeCalibDialog() {
@@ -64,14 +62,6 @@ public class CVCamera extends Activity {
 		switch (id) {
 		case DIALOG_OPENING_TUTORIAL:
 			Toast.makeText(this, "Try clicking the menu for CV options.",
-					Toast.LENGTH_LONG).show();
-			break;
-		case DIALOG_TUTORIAL_FAST:
-			Toast.makeText(this, "Detecting and Displaying FAST features",
-					Toast.LENGTH_LONG).show();
-			break;
-		case DIALOG_TUTORIAL_SURF:
-			Toast.makeText(this, "Detecting and Displaying SURF features",
 					Toast.LENGTH_LONG).show();
 			break;
 		case DIALOG_TUTORIAL_STAR:
@@ -189,9 +179,7 @@ public class CVCamera extends Activity {
 
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
-		menu.add("FAST");
 		menu.add("STAR");
-		menu.add("SURF");
 		menu.add("GFTT");
 		menu.add("Chess");
 		menu.add("Settings");
@@ -205,13 +193,8 @@ public class CVCamera extends Activity {
 	public boolean onOptionsItemSelected(MenuItem item) {
 		LinkedList<PoolCallback> defaultcallbackstack = new LinkedList<PoolCallback>();
 		defaultcallbackstack.addFirst(glview.getDrawCallback());
-		if (item.getTitle().equals("FAST")) {
 
-			defaultcallbackstack.addFirst(new FastProcessor());
-			toasts(DIALOG_TUTORIAL_FAST);
-		}
-
-		else if (item.getTitle().equals("Chess")) {
+		if (item.getTitle().equals("Chess")) {
 
 			defaultcallbackstack.addFirst(new CalibrationProcessor());
 			toasts(DIALOG_TUTORIAL_CHESS);
@@ -222,13 +205,6 @@ public class CVCamera extends Activity {
 
 			defaultcallbackstack.addFirst(new STARProcessor());
 			toasts(DIALOG_TUTORIAL_STAR);
-
-		}
-
-		else if (item.getTitle().equals("SURF")) {
-
-			defaultcallbackstack.addFirst(new SURFProcessor());
-			toasts(DIALOG_TUTORIAL_SURF);
 
 		}
 
@@ -366,34 +342,12 @@ public class CVCamera extends Activity {
 	// final processor so taht these processor callbacks can access it
 	final Processor processor = new Processor();
 
-	class FastProcessor implements NativeProcessor.PoolCallback {
-
-		@Override
-		public void process(int idx, image_pool pool, long timestamp,
-				NativeProcessor nativeProcessor) {
-			processor.detectAndDrawFeatures(idx, pool, cvcamera.DETECT_FAST);
-
-		}
-
-	}
-
 	class STARProcessor implements NativeProcessor.PoolCallback {
 
 		@Override
 		public void process(int idx, image_pool pool, long timestamp,
 				NativeProcessor nativeProcessor) {
 			processor.detectAndDrawFeatures(idx, pool, cvcamera.DETECT_STAR);
-
-		}
-
-	}
-
-	class SURFProcessor implements NativeProcessor.PoolCallback {
-
-		@Override
-		public void process(int idx, image_pool pool, long timestamp,
-				NativeProcessor nativeProcessor) {
-			processor.detectAndDrawFeatures(idx, pool, cvcamera.DETECT_SURF);
 
 		}
 

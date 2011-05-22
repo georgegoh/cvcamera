@@ -11,10 +11,8 @@ using namespace cv;
 /**
  * some constants, see Processor.h
  */
-#define DETECT_FAST 0
-#define DETECT_STAR 1
-#define DETECT_SURF 2
-#define DETECT_GFTT 3
+#define DETECT_STAR 0
+#define DETECT_GFTT 1
 
 //import the android-cv.i file so that swig is aware of all that has been previous defined
 //notice that it is not an include....

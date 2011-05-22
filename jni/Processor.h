@@ -18,10 +18,8 @@
 
 #include "image_pool.h"
 
-#define DETECT_FAST 0
-#define DETECT_STAR 1
-#define DETECT_SURF 2
-#define DETECT_GFTT 3
+#define DETECT_STAR 0
+#define DETECT_GFTT 1
 
 class Processor
 {
@@ -43,8 +41,6 @@ public:
   void drawText(int idx, image_pool* pool, const char* text);
 private:
   cv::StarFeatureDetector stard;
-  cv::FastFeatureDetector fastd;
-  cv::SurfFeatureDetector surfd;
   cv::GoodFeaturesToTrackDetector gfttd;
   std::vector<cv::KeyPoint> keypoints;
   std::vector<std::vector<cv::Point2f> > imagepoints;
